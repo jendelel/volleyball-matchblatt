@@ -1,0 +1,100 @@
+/* ==========================================================================
+   Swiss Volley / FIVB Official Matchblatt — Sheet & Viewport Styles
+   100% Offline, Zero External Fonts or CDNs
+   ========================================================================== */
+
+.mb-sheet-host,
+.sheet-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #e9eef5;
+  overflow: hidden;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+svg.mb-sheet-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+  background: #ffffff;
+  box-shadow: 0 4px 20px rgba(15, 23, 42, 0.12), 0 1px 3px rgba(15, 23, 42, 0.08);
+  border-radius: 2px;
+  shape-rendering: geometricPrecision;
+  text-rendering: geometricPrecision;
+}
+
+/* Interactive Manual Cell Override Mode */
+svg.mb-sheet-svg.mb-interactive [data-cell-key] {
+  cursor: pointer;
+}
+
+svg.mb-sheet-svg.mb-interactive .mb-cell-hit {
+  fill: rgba(37, 99, 235, 0.01);
+  stroke: transparent;
+  stroke-width: 1;
+  transition: fill 120ms ease, stroke 120ms ease;
+}
+
+svg.mb-sheet-svg.mb-interactive [data-cell-key]:hover .mb-cell-hit {
+  fill: rgba(37, 99, 235, 0.12);
+  stroke: #2563eb;
+  stroke-width: 1.2;
+}
+
+svg.mb-sheet-svg.mb-interactive [data-cell-key].mb-overridden .mb-cell-hit {
+  fill: rgba(124, 58, 237, 0.09);
+  stroke: rgba(124, 58, 237, 0.45);
+  stroke-dasharray: 2 1.5;
+}
+
+/* Latest Change Highlight Pulse */
+@keyframes mbHighlightPulse {
+  0%, 100% {
+    fill-opacity: 0.34;
+    stroke-opacity: 0.95;
+  }
+  50% {
+    fill-opacity: 0.52;
+    stroke-opacity: 1;
+  }
+}
+
+svg.mb-sheet-svg .mb-highlight {
+  fill: #fbbf24;
+  fill-opacity: 0.36;
+  stroke: #d97706;
+  stroke-width: 1.8;
+  pointer-events: none;
+  animation: mbHighlightPulse 1.8s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  svg.mb-sheet-svg .mb-highlight {
+    animation: none;
+  }
+}
+
+@media print {
+  .mb-sheet-host,
+  .sheet-container {
+    background: #ffffff;
+  }
+
+  svg.mb-sheet-svg {
+    box-shadow: none;
+    border-radius: 0;
+    width: 100%;
+    height: auto;
+  }
+
+  svg.mb-sheet-svg .mb-highlight {
+    display: none !important;
+  }
+}

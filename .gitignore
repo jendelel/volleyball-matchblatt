@@ -1,0 +1,23 @@
+# macOS & OS metadata
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+Thumbs.db
+
+# Node / dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+*.log
+
+# Reference & temporary artifacts
+.ref/
+tmp/
+.tmp/
+*.tmp
+*.swp
+*~
+coverage/
+screenshots/
