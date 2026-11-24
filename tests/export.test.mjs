@@ -176,7 +176,7 @@ test('Exporter.buildPDFBytesFromJPEG builds a valid %PDF-1.4 A4 Landscape file w
   }
 });
 
-// 3. JSON Backup & Restore
+// 3. JSON Backup & Restore + Direct Vector SVG Blob Export
 await (async () => {
   try {
     const demo = Engine.createDemoMatch('en');
@@ -184,10 +184,23 @@ await (async () => {
     const restored = await Exporter.importJSON(serialized);
     assert.ok(restored && restored.state, 'Exporter.importJSON must parse serialized match doc');
     assert.equal(restored.state.teams.A.name, demo.state.teams.A.name);
+
+    assert.equal(typeof Exporter.toSVGBlob, 'function', 'Exporter.toSVGBlob must be exposed');
+    assert.equal(typeof Exporter.downloadSVG, 'function', 'Exporter.downloadSVG must be exposed');
+    assert.equal(typeof Exporter.shareSVG, 'function', 'Exporter.shareSVG must be exposed');
+    assert.equal(typeof Exporter.openSVG, 'function', 'Exporter.openSVG must be exposed');
+
+    const svgBlob = Exporter.toSVGBlob(demo.state);
+    assert.ok(svgBlob.type.startsWith('image/svg+xml'), `Expected image/svg+xml blob, got ${svgBlob.type}`);
+    const svgText = await svgBlob.text();
+    assert.ok(svgText.startsWith('<?xml'), 'Standalone SVG export should include XML declaration');
+    assert.ok(svgText.includes('viewBox="0 0 1684 1190"'), 'Standalone SVG export must include full sheet viewBox');
+    assert.ok(svgText.includes('Volley Köniz'), 'Standalone SVG export must contain match data');
+
     passed++;
-    console.log('  ✓ Exporter.importJSON restores match document cleanly');
+    console.log('  ✓ Exporter.importJSON and Exporter.toSVGBlob verified cleanly');
   } catch (err) {
-    console.error('  ✗ FAIL: Exporter.importJSON restores match document cleanly');
+    console.error('  ✗ FAIL: Exporter.importJSON and Exporter.toSVGBlob verified cleanly');
     console.error(err);
     process.exitCode = 1;
   }

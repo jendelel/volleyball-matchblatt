@@ -1,4 +1,4 @@
-const CACHE_NAME = 'matchblatt-offline-v1';
+const CACHE_NAME = 'matchblatt-offline-v2';
 const PRECACHE_ASSETS = [
   './',
   './index.html',

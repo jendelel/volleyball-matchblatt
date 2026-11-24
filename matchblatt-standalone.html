@@ -839,6 +839,67 @@ textarea:focus-visible {
   color: #0f172a;
 }
 
+.mb-pill-btn.awake-active {
+  background: #dcfce7;
+  border-color: #16a34a;
+  color: #14532d;
+}
+
+.mb-menu-badge {
+  margin-left: auto;
+  font-size: 11px;
+  font-weight: 800;
+  padding: 2px 8px;
+  border-radius: var(--radius-pill);
+  background: var(--bg-subtle);
+  color: var(--text-muted);
+  border: 1px solid var(--border-strong);
+}
+
+.mb-menu-badge.is-on {
+  background: #dcfce7;
+  border-color: #16a34a;
+  color: #14532d;
+}
+
+.mb-set-time-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 12px;
+  flex-wrap: wrap;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 10px 12px;
+  margin: 12px 0;
+  box-shadow: var(--shadow-sm);
+}
+
+.mb-set-time-controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.mb-time-chip {
+  min-height: 38px;
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-strong);
+  background: var(--bg-subtle);
+  color: var(--court-navy);
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.mb-time-chip:hover {
+  background: var(--volley-blue-soft);
+  border-color: var(--volley-blue);
+}
+
 .mb-sheet-stage {
   flex: 1 1 0%;
   min-height: 0;
@@ -865,8 +926,6 @@ textarea:focus-visible {
   display: flex;
   align-items: center;
   justify-content: center;
-  transform-origin: center center;
-  will-change: transform;
 }
 
 .mb-sheet-mount {
@@ -1761,9 +1820,9 @@ textarea:focus-visible {
   gap: 8px;
 }
 
-@media (min-width: 560px) {
+@media (min-width: 680px) and (max-width: 699px), (min-width: 1280px) {
   .mb-export-grid {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
   }
 }
 
@@ -1934,6 +1993,12 @@ textarea:focus-visible {
       'action.clearReset': 'Clear & Reset Match',
       'action.previewSheet': 'Sheet Preview',
       'action.hideSheet': 'Hide Sheet',
+      'app.keepAwake': 'Keep Screen On',
+      'app.keepAwakeShort': 'Screen On',
+      'app.keepAwakeOn': 'ON',
+      'app.keepAwakeOff': 'OFF',
+      'app.keepAwakeToastOn': 'Screen will stay awake during match.',
+      'app.keepAwakeToastOff': 'Screen auto-lock allowed.',
       'sheet.currentSet': 'Current Set',
       'sheet.fullSheet': 'Full Sheet',
       'sheet.tapEdit': 'Tap-to-Edit',
@@ -1964,11 +2029,20 @@ textarea:focus-visible {
       'lineup.autoFill': 'Auto-Fill First 6',
       'lineup.clear': 'Clear 6',
       'lineup.startSet': 'Confirm Lineups & Start Set {set}',
+      'lineup.setStartTime': 'Set {set} Start Time (optional)',
+      'lineup.useNow': 'Now',
+      'lineup.useGameStart': 'Game Start ({time})',
+      'lineup.clearTime': 'Clear',
       'live.serve': 'SERVE',
       'live.sub': 'Sub',
       'live.cards': 'Cards / IR',
       'live.libero': 'Libero',
       'live.endSetBtn': 'Confirm End of Set {set} ({score})',
+      'live.finishSetModalTitle': 'Confirm End of Set {set}',
+      'live.setEndTimeLabel': 'End Time (optional)',
+      'live.setStartTimeLabel': 'Start Time (optional)',
+      'live.setDurationPreview': 'Set Duration: {min} min',
+      'live.confirmFinishSetBtn': 'Confirm End of Set {set}',
       'live.switched8': '8 Points Reached — Court Sides Swapped Automatically!',
       'live.shortcuts': 'Shortcuts: [A / ←] Score Left • [L / →] Score Right • [Ctrl/Cmd+Z] Undo • [Ctrl/Cmd+Shift+Z] Redo',
       'review.manualTitle': 'Manual Report Adjustments & Remarks',
@@ -2241,6 +2315,9 @@ textarea:focus-visible {
       'export.sharePDF': 'Share PDF',
       'export.downloadPNG': 'Download PNG (High-Res)',
       'export.sharePNG': 'Share PNG',
+      'export.downloadSVG': 'Download SVG (Vector)',
+      'export.openSVG': 'Open Vector SVG',
+      'export.shareSVG': 'Share SVG',
       'export.exportJSON': 'Export JSON Backup',
       'export.importJSON': 'Import JSON Backup',
       'export.importSuccess': 'Match backup imported successfully.',
@@ -2314,6 +2391,12 @@ textarea:focus-visible {
       'action.clearReset': 'Spiel löschen & zurücksetzen',
       'action.previewSheet': 'Matchblatt zeigen',
       'action.hideSheet': 'Blatt ausblenden',
+      'app.keepAwake': 'Bildschirm wach halten',
+      'app.keepAwakeShort': 'Wach',
+      'app.keepAwakeOn': 'EIN',
+      'app.keepAwakeOff': 'AUS',
+      'app.keepAwakeToastOn': 'Bildschirm bleibt während des Spiels eingeschaltet.',
+      'app.keepAwakeToastOff': 'Automatische Bildschirmsperre erlaubt.',
       'sheet.currentSet': 'Aktueller Satz',
       'sheet.fullSheet': 'Ganzes Blatt',
       'sheet.tapEdit': 'Zellen bearbeiten',
@@ -2344,11 +2427,20 @@ textarea:focus-visible {
       'lineup.autoFill': 'Erste 6 füllen',
       'lineup.clear': 'Leeren',
       'lineup.startSet': 'Aufstellung bestätigen & Satz {set} starten',
+      'lineup.setStartTime': 'Startzeit Satz {set} (optional)',
+      'lineup.useNow': 'Jetzt',
+      'lineup.useGameStart': 'Spielbeginn ({time})',
+      'lineup.clearTime': 'Leeren',
       'live.serve': 'AUFSCHLAG',
       'live.sub': 'Wechsel',
       'live.cards': 'Karten / UA',
       'live.libero': 'Libero',
       'live.endSetBtn': 'Satz {set} beenden ({score}) → Weiter',
+      'live.finishSetModalTitle': 'Satz {set} abschliessen',
+      'live.setEndTimeLabel': 'Endzeit (optional)',
+      'live.setStartTimeLabel': 'Startzeit (optional)',
+      'live.setDurationPreview': 'Satzdauer: {min} Min.',
+      'live.confirmFinishSetBtn': 'Satz {set} bestätigen',
       'live.switched8': '8 Punkte erreicht — Automatischer Seitenwechsel ausgeführt!',
       'live.shortcuts': 'Tasten: [A / ←] Punkt Links • [L / →] Punkt Rechts • [Cmd/Ctrl+Z] Zurück • [Cmd/Ctrl+Shift+Z] Vor',
       'review.manualTitle': 'Manuelle Korrekturen & Bemerkungen',
@@ -2621,6 +2713,9 @@ textarea:focus-visible {
       'export.sharePDF': 'PDF teilen',
       'export.downloadPNG': 'PNG herunterladen (HD)',
       'export.sharePNG': 'PNG teilen',
+      'export.downloadSVG': 'SVG herunterladen (Vektor)',
+      'export.openSVG': 'Vektor-SVG öffnen',
+      'export.shareSVG': 'SVG teilen',
       'export.exportJSON': 'JSON-Backup speichern',
       'export.importJSON': 'JSON-Backup laden',
       'export.importSuccess': 'Spiel-Backup erfolgreich geladen.',
@@ -4417,7 +4512,12 @@ textarea:focus-visible {
         var rcv = oppTeam(srv);
         csSet.servingTeam = srv;
         csSet.status = 'live';
-        csSet.startTime = action.startTime || csSet.startTime || formatNowHHMM();
+        if (action.startTime !== undefined) {
+          csSet.startTime = action.startTime === null ? '' : String(action.startTime).trim();
+        } else if (!csSet.startTime) {
+          var scheduledStart = csIdx === 0 && state.meta && state.meta.time ? String(state.meta.time).trim() : '';
+          csSet.startTime = scheduledStart || formatNowHHMM();
+        }
         state.phase = 'live';
 
         // Reset court & initialize Position I service turns: ✓ for server, X for receiver
@@ -4525,12 +4625,19 @@ textarea:focus-visible {
           }
         }
 
-        fSet.endTime = action.endTime || fSet.endTime || formatNowHHMM();
-        if (action.durationMin != null) {
-          fSet.durationMin = Number(action.durationMin);
+        if (action.startTime !== undefined) {
+          fSet.startTime = action.startTime === null ? '' : String(action.startTime).trim();
+        }
+        if (action.endTime !== undefined) {
+          fSet.endTime = action.endTime === null ? '' : String(action.endTime).trim();
+        } else if (!fSet.endTime) {
+          fSet.endTime = formatNowHHMM();
+        }
+        if (action.durationMin !== undefined) {
+          fSet.durationMin = action.durationMin === null ? null : Number(action.durationMin);
         } else {
           var computedDur = computeDurationMinutes(fSet.startTime, fSet.endTime);
-          fSet.durationMin = computedDur !== null ? computedDur : 0;
+          fSet.durationMin = computedDur !== null ? computedDur : null;
         }
         fSet.winner = winner;
         fSet.status = 'finished';
@@ -4837,13 +4944,12 @@ textarea:focus-visible {
         if (!utSet) {
           return { doc: doc, warnings: [], error: 'Invalid setIndex' };
         }
-        if (action.startTime !== undefined) utSet.startTime = String(action.startTime);
-        if (action.endTime !== undefined) utSet.endTime = String(action.endTime);
+        if (action.startTime !== undefined) utSet.startTime = action.startTime === null ? '' : String(action.startTime).trim();
+        if (action.endTime !== undefined) utSet.endTime = action.endTime === null ? '' : String(action.endTime).trim();
         if (action.durationMin !== undefined) {
           utSet.durationMin = action.durationMin === null ? null : Number(action.durationMin);
         } else {
-          var recomputed = computeDurationMinutes(utSet.startTime, utSet.endTime);
-          if (recomputed !== null) utSet.durationMin = recomputed;
+          utSet.durationMin = computeDurationMinutes(utSet.startTime, utSet.endTime);
         }
         state.highlights.push({ section: 'set', setIndex: utIdx, field: 'times' });
         state.lastActionLabel = tr('actions.setTimesUpdated', lang, { set: utSet.number });
@@ -8219,8 +8325,10 @@ textarea:focus-visible {
 (function (root) {
   'use strict';
 
-  var DEFAULT_CANVAS_WIDTH = 3368;   // 1684 * 2 (High-DPI 2x A4 Landscape)
-  var DEFAULT_CANVAS_HEIGHT = 2380;  // 1190 * 2 (High-DPI 2x A4 Landscape)
+  var DEFAULT_CANVAS_WIDTH = 4210;   // 1684 * 2.5 (Ultra-HD 2.5x ~360 DPI A4 Landscape; 12.5MP < iOS Safari 16.77MP limit)
+  var DEFAULT_CANVAS_HEIGHT = 2975;  // 1190 * 2.5 (Ultra-HD 2.5x ~360 DPI A4 Landscape)
+  var FALLBACK_CANVAS_WIDTH = 3368;  // 1684 * 2
+  var FALLBACK_CANVAS_HEIGHT = 2380; // 1190 * 2
   var A4_LANDSCAPE_WIDTH_PT = 841.89;
   var A4_LANDSCAPE_HEIGHT_PT = 595.28;
   var PDF_MARGIN_PT = 12;
@@ -8548,6 +8656,15 @@ textarea:focus-visible {
       canvas.width = width;
       canvas.height = height;
       var ctx = canvas.getContext('2d');
+      if (!ctx && (width > FALLBACK_CANVAS_WIDTH || height > FALLBACK_CANVAS_HEIGHT)) {
+        width = FALLBACK_CANVAS_WIDTH;
+        height = FALLBACK_CANVAS_HEIGHT;
+        normalizedSvg = normalizeSVGForCanvas(rawSvg, width, height);
+        canvas = docObj.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+        ctx = canvas.getContext('2d');
+      }
       if (!ctx) {
         reject(new Error('Failed to acquire 2D rendering context on export canvas.'));
         return;
@@ -8696,7 +8813,7 @@ textarea:focus-visible {
       return true;
     }
     try {
-      var ext = mimeType === 'image/png' ? 'png' : 'pdf';
+      var ext = mimeType === 'image/png' ? 'png' : mimeType === 'image/svg+xml' ? 'svg' : 'pdf';
       var probe = new File([new Uint8Array([0])], 'probe.' + ext, { type: mimeType || 'application/pdf' });
       return Boolean(navigator.canShare({ files: [probe] }));
     } catch (_) {
@@ -8760,6 +8877,60 @@ textarea:focus-visible {
     var resolved = normalizeFileAndOptions(state, filename, options, 'png');
     var blob = await toPNGBlob(state, resolved.options);
     return shareOrDownloadBlob(blob, resolved.filename, 'image/png');
+  }
+
+  /**
+   * Builds a standalone, print-clean XML SVG string (with XML declaration and explicit viewBox/width/height)
+   * and returns an `image/svg+xml` Blob for infinite-resolution vector viewing or printing.
+   */
+  function toSVGBlob(state, options) {
+    var rawSvg = getSVGString(state, options);
+    var normalized = normalizeSVGForCanvas(rawSvg, 1684, 1190);
+    var xmlHeader = /^<\?xml\b/i.test(normalized) ? '' : '<?xml version="1.0" encoding="UTF-8"?>\n';
+    return new Blob([xmlHeader + normalized], { type: 'image/svg+xml;charset=utf-8' });
+  }
+
+  /**
+   * Downloads the rendered Matchblatt directly as a pure vector `.svg` file.
+   */
+  function downloadSVG(state, filename, options) {
+    var resolved = normalizeFileAndOptions(state, filename, options, 'svg');
+    var blob = toSVGBlob(state, resolved.options);
+    triggerBlobDownload(blob, resolved.filename);
+  }
+
+  /**
+   * Shares the pure vector `.svg` file via native Share Sheet, or falls back to downloadSVG.
+   */
+  async function shareSVG(state, filename, options) {
+    var resolved = normalizeFileAndOptions(state, filename, options, 'svg');
+    var blob = toSVGBlob(state, resolved.options);
+    return shareOrDownloadBlob(blob, resolved.filename, 'image/svg+xml');
+  }
+
+  /**
+   * Opens the standalone vector Matchblatt SVG in a new browser tab for native mobile pinch-to-zoom & printing.
+   * Falls back to downloadSVG if popup blocking prevents opening a new tab.
+   */
+  function openSVG(state, options) {
+    var blob = toSVGBlob(state, options);
+    if (typeof window !== 'undefined' && typeof URL !== 'undefined' && typeof URL.createObjectURL === 'function') {
+      var objectUrl = URL.createObjectURL(blob);
+      var win = typeof window.open === 'function' ? window.open(objectUrl, '_blank', 'noopener') : null;
+      if (!win) {
+        triggerBlobDownload(blob, buildDefaultFilename(state, 'svg'));
+      }
+      var revokeTimer = setTimeout(function () {
+        try {
+          URL.revokeObjectURL(objectUrl);
+        } catch (_) {}
+      }, 60000);
+      if (revokeTimer && typeof revokeTimer.unref === 'function') {
+        revokeTimer.unref();
+      }
+      return true;
+    }
+    return false;
   }
 
   /**
@@ -9179,6 +9350,10 @@ textarea:focus-visible {
     toPNGBlob: toPNGBlob,
     downloadPNG: downloadPNG,
     sharePNG: sharePNG,
+    toSVGBlob: toSVGBlob,
+    downloadSVG: downloadSVG,
+    shareSVG: shareSVG,
+    openSVG: openSVG,
     buildPDFBytesFromJPEG: buildPDFBytesFromJPEG,
     toPDFBlob: toPDFBlob,
     downloadPDF: downloadPDF,
@@ -9207,6 +9382,10 @@ textarea:focus-visible {
       toPNGBlob: toPNGBlob,
       downloadPNG: downloadPNG,
       sharePNG: sharePNG,
+      toSVGBlob: toSVGBlob,
+      downloadSVG: downloadSVG,
+      shareSVG: shareSVG,
+      openSVG: openSVG,
       buildPDFBytesFromJPEG: buildPDFBytesFromJPEG,
       toPDFBlob: toPDFBlob,
       downloadPDF: downloadPDF,
@@ -9247,6 +9426,12 @@ textarea:focus-visible {
       'action.clearReset': 'Clear & Reset Match',
       'action.previewSheet': 'Sheet Preview',
       'action.hideSheet': 'Hide Sheet',
+      'app.keepAwake': 'Keep Screen On',
+      'app.keepAwakeShort': 'Screen On',
+      'app.keepAwakeOn': 'ON',
+      'app.keepAwakeOff': 'OFF',
+      'app.keepAwakeToastOn': 'Screen will stay awake during match.',
+      'app.keepAwakeToastOff': 'Screen auto-lock allowed.',
       'sheet.currentSet': 'Current Set',
       'sheet.fullSheet': 'Full Sheet',
       'sheet.tapEdit': 'Tap-to-Edit',
@@ -9317,6 +9502,10 @@ textarea:focus-visible {
       'lineup.autoFill': 'Auto-Fill First 6',
       'lineup.clear': 'Clear 6',
       'lineup.startSet': 'Confirm Lineups & Start Set {set}',
+      'lineup.setStartTime': 'Set {set} Start Time (optional)',
+      'lineup.useNow': 'Now',
+      'lineup.useGameStart': 'Game Start ({time})',
+      'lineup.clearTime': 'Clear',
       'live.serve': 'SERVE',
       'live.sub': 'Sub',
       'live.timeout': 'Timeout',
@@ -9324,6 +9513,11 @@ textarea:focus-visible {
       'live.swapSides': 'Swap Sides',
       'live.libero': 'Libero',
       'live.endSetBtn': 'Confirm End of Set {set} ({score})',
+      'live.finishSetModalTitle': 'Confirm End of Set {set}',
+      'live.setEndTimeLabel': 'End Time (optional)',
+      'live.setStartTimeLabel': 'Start Time (optional)',
+      'live.setDurationPreview': 'Set Duration: {min} min',
+      'live.confirmFinishSetBtn': 'Confirm End of Set {set}',
       'live.switched8': '8 Points Reached — Court Sides Swapped Automatically!',
       'live.shortcuts': 'Shortcuts: [A / ←] Score Left • [L / →] Score Right • [Ctrl/Cmd+Z] Undo • [Ctrl/Cmd+Shift+Z] Redo',
       'review.summaryTitle': 'Match Result & Set Totals',
@@ -9338,6 +9532,9 @@ textarea:focus-visible {
       'export.sharePDF': 'Share PDF',
       'export.downloadPNG': 'Download PNG',
       'export.sharePNG': 'Share PNG',
+      'export.downloadSVG': 'Download SVG (Vector)',
+      'export.openSVG': 'Open Vector SVG',
+      'export.shareSVG': 'Share SVG',
       'export.exportJSON': 'Export JSON',
       'export.importJSON': 'Import JSON',
     },
@@ -9355,6 +9552,12 @@ textarea:focus-visible {
       'action.clearReset': 'Spiel löschen & zurücksetzen',
       'action.previewSheet': 'Matchblatt zeigen',
       'action.hideSheet': 'Blatt ausblenden',
+      'app.keepAwake': 'Bildschirm wach halten',
+      'app.keepAwakeShort': 'Wach',
+      'app.keepAwakeOn': 'EIN',
+      'app.keepAwakeOff': 'AUS',
+      'app.keepAwakeToastOn': 'Bildschirm bleibt während des Spiels eingeschaltet.',
+      'app.keepAwakeToastOff': 'Automatische Bildschirmsperre erlaubt.',
       'sheet.currentSet': 'Aktueller Satz',
       'sheet.fullSheet': 'Ganzes Blatt',
       'sheet.tapEdit': 'Zellen bearbeiten',
@@ -9425,6 +9628,10 @@ textarea:focus-visible {
       'lineup.autoFill': 'Erste 6 füllen',
       'lineup.clear': 'Leeren',
       'lineup.startSet': 'Aufstellung bestätigen & Satz {set} starten',
+      'lineup.setStartTime': 'Startzeit Satz {set} (optional)',
+      'lineup.useNow': 'Jetzt',
+      'lineup.useGameStart': 'Spielbeginn ({time})',
+      'lineup.clearTime': 'Leeren',
       'live.serve': 'AUFSCHLAG',
       'live.sub': 'Wechsel',
       'live.timeout': 'Time-out',
@@ -9432,6 +9639,11 @@ textarea:focus-visible {
       'live.swapSides': 'Seitenwechsel',
       'live.libero': 'Libero',
       'live.endSetBtn': 'Satz {set} beenden ({score}) → Weiter',
+      'live.finishSetModalTitle': 'Satz {set} abschliessen',
+      'live.setEndTimeLabel': 'Endzeit (optional)',
+      'live.setStartTimeLabel': 'Startzeit (optional)',
+      'live.setDurationPreview': 'Satzdauer: {min} Min.',
+      'live.confirmFinishSetBtn': 'Satz {set} bestätigen',
       'live.switched8': '8 Punkte erreicht — Automatischer Seitenwechsel ausgeführt!',
       'live.shortcuts': 'Tasten: [A / ←] Punkt Links • [L / →] Punkt Rechts • [Cmd/Ctrl+Z] Zurück • [Cmd/Ctrl+Shift+Z] Vor',
       'review.summaryTitle': 'Spielresultat & Satzübersicht',
@@ -9446,6 +9658,9 @@ textarea:focus-visible {
       'export.sharePDF': 'PDF teilen',
       'export.downloadPNG': 'PNG herunterladen',
       'export.sharePNG': 'PNG teilen',
+      'export.downloadSVG': 'SVG herunterladen (Vektor)',
+      'export.openSVG': 'Vektor-SVG öffnen',
+      'export.shareSVG': 'SVG teilen',
       'export.exportJSON': 'JSON Backup',
       'export.importJSON': 'JSON laden',
     },
@@ -9478,6 +9693,44 @@ textarea:focus-visible {
   function interpolate(str, params) {
     if (!params) return str;
     return String(str).replace(/\{(\w+)\}/g, (_, k) => (params[k] !== undefined ? String(params[k]) : `{${k}}`));
+  }
+
+  function formatCurrentHHMM() {
+    const d = new Date();
+    return `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
+  }
+
+  function calcDurationMin(startStr, endStr) {
+    if (!startStr || !endStr) return null;
+    const m1 = /^(\d{1,2}):(\d{2})$/.exec(String(startStr).trim());
+    const m2 = /^(\d{1,2}):(\d{2})$/.exec(String(endStr).trim());
+    if (!m1 || !m2) return null;
+    const t1 = parseInt(m1[1], 10) * 60 + parseInt(m1[2], 10);
+    const t2 = parseInt(m2[1], 10) * 60 + parseInt(m2[2], 10);
+    if (Number.isNaN(t1) || Number.isNaN(t2)) return null;
+    let diff = t2 - t1;
+    if (diff < 0) diff += 24 * 60;
+    return diff;
+  }
+
+  const KEEP_AWAKE_KEY = 'matchblatt_keep_awake_v1';
+
+  function loadKeepAwakePref() {
+    try {
+      if (typeof localStorage !== 'undefined' && localStorage) {
+        const raw = localStorage.getItem(KEEP_AWAKE_KEY);
+        if (raw === '0' || raw === 'false') return false;
+      }
+    } catch (_) {}
+    return true; // Enabled by default so phone screen does not turn off during rallies
+  }
+
+  function saveKeepAwakePref(enabled) {
+    try {
+      if (typeof localStorage !== 'undefined' && localStorage) {
+        localStorage.setItem(KEEP_AWAKE_KEY, enabled ? '1' : '0');
+      }
+    } catch (_) {}
   }
 
   function initApp() {
@@ -9525,16 +9778,150 @@ textarea:focus-visible {
       sheetViewMode: doc.state.phase === 'live' || doc.state.phase === 'lineup' ? 'set' : 'full',
       sheetSetIndex: doc.state.currentSetIndex || 0,
       manualEditMode: false,
+      keepAwake: loadKeepAwakePref(),
       zoom: 1,
-      panX: 0,
-      panY: 0,
+      camDX: 0,
+      camDY: 0,
+      suppressNextSheetClick: false,
       isOnline: navigator.onLine !== false,
       lineupDrafts: {}, // key `${setIndex}_A` -> [6 strings]
+      startTimeDrafts: {}, // key `${setIndex}` -> string ('HH:MM' or '')
       lineupCursor: { A: 0, B: 0 },
       dismissedSwitch8Set: -1,
       timeoutTimer: null, // { team, remaining, intervalId }
       modal: null, // { type, ...payload }
     };
+
+    // ========================================================================
+    // Screen Wake Lock Controller (keeps phone display awake during rallies)
+    // ========================================================================
+    let wakeSentinel = null;
+    let wakeRequestInFlight = false;
+    let fallbackWakeVideo = null;
+
+    function stopFallbackWakeVideo() {
+      if (!fallbackWakeVideo) return;
+      try {
+        fallbackWakeVideo.pause();
+        if (fallbackWakeVideo.srcObject && fallbackWakeVideo.srcObject.getTracks) {
+          fallbackWakeVideo.srcObject.getTracks().forEach((t) => t.stop());
+        }
+        fallbackWakeVideo.srcObject = null;
+        if (fallbackWakeVideo.parentNode) {
+          fallbackWakeVideo.parentNode.removeChild(fallbackWakeVideo);
+        }
+      } catch (_) {}
+      fallbackWakeVideo = null;
+    }
+
+    function startFallbackWakeVideo() {
+      if (fallbackWakeVideo || typeof document === 'undefined') return;
+      try {
+        const c = document.createElement('canvas');
+        c.width = 2;
+        c.height = 2;
+        const cctx = c.getContext('2d');
+        if (cctx) cctx.fillRect(0, 0, 2, 2);
+        if (typeof c.captureStream !== 'function') return;
+        const v = document.createElement('video');
+        v.muted = true;
+        v.playsInline = true;
+        v.setAttribute('playsinline', '');
+        v.setAttribute('muted', '');
+        v.style.cssText = 'position:fixed;width:1px;height:1px;opacity:0.001;pointer-events:none;left:-10px;top:-10px;';
+        v.srcObject = c.captureStream(1);
+        if (document.body) document.body.appendChild(v);
+        const p = v.play();
+        if (p && typeof p.catch === 'function') {
+          p.catch(() => {
+            stopFallbackWakeVideo();
+          });
+        }
+        fallbackWakeVideo = v;
+      } catch (_) {
+        stopFallbackWakeVideo();
+      }
+    }
+
+    async function syncWakeLock() {
+      const hasNativeWakeLock = Boolean(
+        typeof navigator !== 'undefined' &&
+        navigator.wakeLock &&
+        typeof navigator.wakeLock.request === 'function'
+      );
+
+      if (!ui.keepAwake) {
+        stopFallbackWakeVideo();
+        if (wakeSentinel) {
+          const s = wakeSentinel;
+          wakeSentinel = null;
+          try {
+            await s.release();
+          } catch (_) {}
+        }
+        return;
+      }
+
+      if (typeof document !== 'undefined' && document.visibilityState === 'hidden') {
+        return;
+      }
+
+      if (hasNativeWakeLock) {
+        if ((wakeSentinel && !wakeSentinel.released) || wakeRequestInFlight) return;
+        wakeRequestInFlight = true;
+        try {
+          const sentinel = await navigator.wakeLock.request('screen');
+          if (!ui.keepAwake) {
+            try {
+              await sentinel.release();
+            } catch (_) {}
+          } else {
+            wakeSentinel = sentinel;
+            sentinel.addEventListener('release', () => {
+              if (wakeSentinel === sentinel) {
+                wakeSentinel = null;
+              }
+            });
+          }
+        } catch (_) {
+          // Will automatically retry on next pointerdown / keydown / visibilitychange
+        } finally {
+          wakeRequestInFlight = false;
+        }
+      } else {
+        startFallbackWakeVideo();
+      }
+    }
+
+    window.__mbWakeLockStatus = () => ({
+      keepAwake: ui.keepAwake,
+      active: Boolean((wakeSentinel && !wakeSentinel.released) || fallbackWakeVideo),
+      supported: Boolean(navigator.wakeLock && typeof navigator.wakeLock.request === 'function'),
+    });
+
+    syncWakeLock();
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible' && ui.keepAwake) {
+        syncWakeLock();
+      }
+    });
+    window.addEventListener('focus', () => {
+      if (ui.keepAwake) syncWakeLock();
+    });
+    window.addEventListener(
+      'pointerdown',
+      () => {
+        if (ui.keepAwake && (!wakeSentinel || wakeSentinel.released)) syncWakeLock();
+      },
+      { passive: true }
+    );
+    window.addEventListener(
+      'keydown',
+      () => {
+        if (ui.keepAwake && (!wakeSentinel || wakeSentinel.released)) syncWakeLock();
+      },
+      { passive: true }
+    );
 
     function tr(key, params = {}) {
       const lang = (doc.state && doc.state.lang) || 'de';
@@ -9609,21 +9996,193 @@ textarea:focus-visible {
       }, 3200);
     }
 
-    function applyPanZoom() {
-      sheetTransformEl.style.transform = `translate(${ui.panX}px, ${ui.panY}px) scale(${ui.zoom})`;
-      if (zoomPctEl) {
-        zoomPctEl.textContent = `${Math.round(ui.zoom * 100)}%`;
+    let cachedStageBox = { width: 0, height: 0 };
+    let currentRenderMetrics = null;
+
+    function getSheetSVGEl() {
+      return sheetController && typeof sheetController.getSVGElement === 'function'
+        ? sheetController.getSVGElement()
+        : (sheetMountEl.querySelector ? sheetMountEl.querySelector('svg') : null);
+    }
+
+    function getBaseViewBox() {
+      if (typeof SheetRenderer.getViewBox === 'function') {
+        const vb = SheetRenderer.getViewBox(ui.sheetViewMode, ui.sheetSetIndex, doc.state);
+        const candW = vb && (vb.w || vb.width);
+        const candH = vb && (vb.h || vb.height);
+        if (candW > 0 && candH > 0) {
+          return { x: vb.x || 0, y: vb.y || 0, w: candW, h: candH };
+        }
       }
+      return { x: 0, y: 0, w: 1684, h: 1190 };
+    }
+
+    // Pure vector pan & zoom via SVG viewBox — zero CSS transform bitmap blur at up to 800% zoom!
+    function applyCameraToSVG() {
+      const svgEl = getSheetSVGEl();
+      if (!svgEl) return;
+
+      const baseVB = getBaseViewBox();
+      const vbW = baseVB.w;
+      const vbH = baseVB.h;
+
+      if (sheetTransformEl) {
+        sheetTransformEl.style.transform = 'none';
+      }
+
+      const stW = cachedStageBox.width;
+      const stH = cachedStageBox.height;
+      if (stW > 24 && stH > 24) {
+        const zoom = Math.min(8, Math.max(1, ui.zoom || 1));
+        ui.zoom = zoom;
+        const isZoomed = zoom > 1.001;
+        const pad = isZoomed ? 4 : (stW < 500 ? 12 : 18);
+        const availW = Math.max(20, stW - pad);
+        const availH = Math.max(20, stH - pad);
+        const fitScale = Math.min(availW / vbW, availH / vbH);
+
+        if (!isZoomed) {
+          ui.camDX = 0;
+          ui.camDY = 0;
+          const cssW = Math.max(1, Math.floor(vbW * fitScale));
+          const cssH = Math.max(1, Math.floor(vbH * fitScale));
+          svgEl.style.aspectRatio = `${vbW} / ${vbH}`;
+          svgEl.style.width = `${cssW}px`;
+          svgEl.style.height = `${cssH}px`;
+          svgEl.setAttribute('viewBox', `${baseVB.x} ${baseVB.y} ${vbW} ${vbH}`);
+          currentRenderMetrics = {
+            baseVB,
+            availW,
+            availH,
+            fitScale,
+            pxPerUnit: fitScale,
+            cssW,
+            cssH,
+            visX: baseVB.x,
+            visY: baseVB.y,
+            visW: vbW,
+            visH: vbH,
+          };
+        } else {
+          const pxPerUnit = fitScale * zoom;
+          const cssW = Math.max(1, Math.min(Math.floor(availW), Math.round(vbW * pxPerUnit)));
+          const cssH = Math.max(1, Math.min(Math.floor(availH), Math.round(vbH * pxPerUnit)));
+          const visW = Math.min(vbW, cssW / pxPerUnit);
+          const visH = Math.min(vbH, cssH / pxPerUnit);
+
+          const maxDX = Math.max(0, (vbW - visW) / 2);
+          const maxDY = Math.max(0, (vbH - visH) / 2);
+          ui.camDX = Math.max(-maxDX, Math.min(maxDX, ui.camDX || 0));
+          ui.camDY = Math.max(-maxDY, Math.min(maxDY, ui.camDY || 0));
+
+          const cx = baseVB.x + vbW / 2 + ui.camDX;
+          const cy = baseVB.y + vbH / 2 + ui.camDY;
+          const visX = cx - visW / 2;
+          const visY = cy - visH / 2;
+
+          svgEl.style.aspectRatio = `${cssW} / ${cssH}`;
+          svgEl.style.width = `${cssW}px`;
+          svgEl.style.height = `${cssH}px`;
+          svgEl.setAttribute(
+            'viewBox',
+            `${visX.toFixed(2)} ${visY.toFixed(2)} ${visW.toFixed(2)} ${visH.toFixed(2)}`
+          );
+          currentRenderMetrics = {
+            baseVB,
+            availW,
+            availH,
+            fitScale,
+            pxPerUnit,
+            cssW,
+            cssH,
+            visX,
+            visY,
+            visW,
+            visH,
+          };
+        }
+      } else {
+        svgEl.style.aspectRatio = `${vbW} / ${vbH}`;
+        svgEl.style.width = 'auto';
+        svgEl.style.height = 'auto';
+        svgEl.setAttribute('viewBox', `${baseVB.x} ${baseVB.y} ${vbW} ${vbH}`);
+      }
+
+      if (zoomPctEl) {
+        zoomPctEl.textContent = `${Math.round((ui.zoom || 1) * 100)}%`;
+      }
+    }
+
+    function applyPanZoom() {
+      if (cachedStageBox.width <= 24 || cachedStageBox.height <= 24) {
+        fitSheetSVG();
+        return;
+      }
+      applyCameraToSVG();
     }
 
     function resetPanZoom() {
       ui.zoom = 1;
-      ui.panX = 0;
-      ui.panY = 0;
+      ui.camDX = 0;
+      ui.camDY = 0;
+      applyPanZoom();
+    }
+
+    function zoomAtPoint(nextZoomRaw, clientX, clientY) {
+      const nextZoom = Math.min(8, Math.max(1, nextZoomRaw));
+      const m = currentRenderMetrics;
+      const svgEl = getSheetSVGEl();
+      if (!m || !svgEl || clientX == null || clientY == null) {
+        ui.zoom = nextZoom;
+        if (nextZoom <= 1.001) {
+          ui.camDX = 0;
+          ui.camDY = 0;
+        }
+        applyPanZoom();
+        return;
+      }
+
+      const r = svgEl.getBoundingClientRect();
+      if (r.width > 4 && r.height > 4) {
+        const u = Math.max(0, Math.min(1, (clientX - r.left) / r.width));
+        const v = Math.max(0, Math.min(1, (clientY - r.top) / r.height));
+        const svgPtX = m.visX + u * m.visW;
+        const svgPtY = m.visY + v * m.visH;
+
+        ui.zoom = nextZoom;
+        if (nextZoom <= 1.001) {
+          ui.camDX = 0;
+          ui.camDY = 0;
+        } else {
+          const stR = sheetStageEl.getBoundingClientRect();
+          const availW = Math.max(20, stR.width - 4);
+          const availH = Math.max(20, stR.height - 4);
+          const fitScale = Math.min(availW / m.baseVB.w, availH / m.baseVB.h);
+          const newPxPerUnit = fitScale * nextZoom;
+          const newCssW = Math.max(1, Math.min(Math.floor(availW), Math.round(m.baseVB.w * newPxPerUnit)));
+          const newCssH = Math.max(1, Math.min(Math.floor(availH), Math.round(m.baseVB.h * newPxPerUnit)));
+          const newVisW = Math.min(m.baseVB.w, newCssW / newPxPerUnit);
+          const newVisH = Math.min(m.baseVB.h, newCssH / newPxPerUnit);
+          const newLeft = stR.left + (stR.width - newCssW) / 2;
+          const newTop = stR.top + (stR.height - newCssH) / 2;
+          const uNew = Math.max(0, Math.min(1, (clientX - newLeft) / newCssW));
+          const vNew = Math.max(0, Math.min(1, (clientY - newTop) / newCssH));
+          const newVisX = svgPtX - uNew * newVisW;
+          const newVisY = svgPtY - vNew * newVisH;
+          ui.camDX = (newVisX + newVisW / 2) - (m.baseVB.x + m.baseVB.w / 2);
+          ui.camDY = (newVisY + newVisH / 2) - (m.baseVB.y + m.baseVB.h / 2);
+        }
+      } else {
+        ui.zoom = nextZoom;
+      }
       applyPanZoom();
     }
 
     function handleSheetCellClick(cellInfo) {
+      if (ui.suppressNextSheetClick) {
+        ui.suppressNextSheetClick = false;
+        return;
+      }
       if (!ui.manualEditMode || !cellInfo || !cellInfo.cellKey) return;
       const existing = doc.state.manualOverrides && doc.state.manualOverrides[cellInfo.cellKey];
       ui.modal = {
@@ -9636,29 +10195,12 @@ textarea:focus-visible {
     }
 
     function fitSheetSVG() {
-      const svgEl = sheetController && typeof sheetController.getSVGElement === 'function'
-        ? sheetController.getSVGElement()
-        : (sheetMountEl.querySelector ? sheetMountEl.querySelector('svg') : null);
+      const svgEl = getSheetSVGEl();
       if (!svgEl) return;
 
-      let vbW = 1684;
-      let vbH = 1190;
-      const rawVB = svgEl.getAttribute && svgEl.getAttribute('viewBox');
-      if (rawVB) {
-        const parts = rawVB.trim().split(/[\s,]+/).map(Number);
-        if (parts.length === 4 && parts[2] > 0 && parts[3] > 0) {
-          vbW = parts[2];
-          vbH = parts[3];
-        }
-      } else if (typeof SheetRenderer.getViewBox === 'function') {
-        const vb = SheetRenderer.getViewBox(ui.sheetViewMode, ui.sheetSetIndex, doc.state);
-        const candW = vb && (vb.w || vb.width);
-        const candH = vb && (vb.h || vb.height);
-        if (candW > 0 && candH > 0) {
-          vbW = candW;
-          vbH = candH;
-        }
-      }
+      const baseVB = getBaseViewBox();
+      const vbW = baseVB.w;
+      const vbH = baseVB.h;
 
       if (svgEl.setAttribute) {
         svgEl.setAttribute('preserveAspectRatio', 'xMidYMid meet');
@@ -9684,21 +10226,14 @@ textarea:focus-visible {
       // Reset to small box before measuring stage so intrinsic SVG height never inflates flex container
       svgEl.style.width = '10px';
       svgEl.style.height = '10px';
-      svgEl.style.aspectRatio = `${vbW} / ${vbH}`;
       svgEl.style.overflow = 'hidden';
 
       const rect = sheetStageEl.getBoundingClientRect ? sheetStageEl.getBoundingClientRect() : null;
-      if (rect && rect.width > 24 && rect.height > 24) {
-        const pad = rect.width < 500 ? 14 : 18;
-        const availW = Math.max(20, rect.width - pad);
-        const availH = Math.max(20, rect.height - pad);
-        const scale = Math.min(availW / vbW, availH / vbH);
-        svgEl.style.width = `${Math.max(1, Math.floor(vbW * scale))}px`;
-        svgEl.style.height = `${Math.max(1, Math.floor(vbH * scale))}px`;
-      } else {
-        svgEl.style.width = 'auto';
-        svgEl.style.height = 'auto';
-      }
+      cachedStageBox = {
+        width: rect ? rect.width : 0,
+        height: rect ? rect.height : 0,
+      };
+      applyCameraToSVG();
     }
 
     function renderSheet() {
@@ -9863,6 +10398,11 @@ textarea:focus-visible {
               </button>
               ${ui.menuOpen ? `
                 <div class="mb-menu-popover" role="menu">
+                  <button type="button" class="mb-menu-item" data-action="toggle-keep-awake" role="menuitemcheckbox" aria-checked="${ui.keepAwake}">
+                    <span>☀ ${esc(tr('app.keepAwake'))}</span>
+                    <span class="mb-menu-badge ${ui.keepAwake ? 'is-on' : ''}">${esc(ui.keepAwake ? tr('app.keepAwakeOn') : tr('app.keepAwakeOff'))}</span>
+                  </button>
+                  <div class="mb-menu-divider"></div>
                   <button type="button" class="mb-menu-item" data-action="load-demo">
                     ⚡ ${esc(tr('action.demo'))}
                   </button>
@@ -9871,6 +10411,9 @@ textarea:focus-visible {
                   </button>
                   <button type="button" class="mb-menu-item" data-action="toggle-sheet-fullscreen">
                     ⛶ ${esc(tr('sheet.expand'))}
+                  </button>
+                  <button type="button" class="mb-menu-item" data-action="open-svg">
+                    🔍 ${esc(tr('export.openSVG'))}
                   </button>
                   <div class="mb-menu-divider"></div>
                   <button type="button" class="mb-menu-item" data-action="export-json">
@@ -10407,11 +10950,25 @@ textarea:focus-visible {
       `;
     }
 
+    function getDraftStartTime(setIdx) {
+      if (Object.prototype.hasOwnProperty.call(ui.startTimeDrafts, setIdx)) {
+        return ui.startTimeDrafts[setIdx];
+      }
+      const existing = doc.state.sets[setIdx]?.startTime;
+      if (existing) return existing;
+      if (setIdx === 0 && doc.state.meta && doc.state.meta.time) {
+        return String(doc.state.meta.time).trim();
+      }
+      return formatCurrentHHMM();
+    }
+
     function renderLineupView(setIdx, currentSet) {
       const leftTeam = currentSet.leftTeam || 'A';
       const rightTeam = currentSet.rightTeam || (leftTeam === 'A' ? 'B' : 'A');
       const firstServe = currentSet.firstServe || 'A';
       const toss = doc.state.toss || {};
+      const startTimeVal = getDraftStartTime(setIdx);
+      const scheduledGameStart = (doc.state.meta && doc.state.meta.time) ? String(doc.state.meta.time).trim() : '';
 
       return `
         ${currentSet.isDeciding ? `
@@ -10451,6 +11008,26 @@ textarea:focus-visible {
         <div class="mb-lineup-grid-wrap">
           ${renderLineupTeamBox(setIdx, leftTeam, 'LEFT', firstServe === leftTeam)}
           ${renderLineupTeamBox(setIdx, rightTeam, 'RIGHT', firstServe === rightTeam)}
+        </div>
+
+        <div class="mb-set-time-bar">
+          <label for="mb-lineup-start-time" class="mb-label" style="font-size:13px;color:var(--court-navy);">
+            🕐 ${esc(tr('lineup.setStartTime', { set: currentSet.number }))}
+          </label>
+          <div class="mb-set-time-controls">
+            <input type="time" class="mb-input mb-input-sm tabular" style="width:auto;min-width:122px;min-height:40px;padding:6px 10px;" id="mb-lineup-start-time" data-lineup-start-time="${setIdx}" value="${esc(startTimeVal)}">
+            <button type="button" class="mb-time-chip" data-action="lineup-time-now" data-set-index="${setIdx}">
+              ${esc(tr('lineup.useNow'))}
+            </button>
+            ${setIdx === 0 && scheduledGameStart ? `
+              <button type="button" class="mb-time-chip" data-action="lineup-time-scheduled" data-set-index="${setIdx}">
+                ${esc(tr('lineup.useGameStart', { time: scheduledGameStart }))}
+              </button>
+            ` : ''}
+            <button type="button" class="mb-time-chip" data-action="lineup-time-clear" data-set-index="${setIdx}">
+              ${esc(tr('lineup.clearTime'))}
+            </button>
+          </div>
         </div>
 
         <button type="button" class="mb-btn mb-btn-success mb-btn-block" style="font-size:16px;min-height:54px;" data-action="confirm-start-set" data-set-index="${setIdx}">
@@ -10639,7 +11216,14 @@ textarea:focus-visible {
         })
         .join('');
 
-      const headerStrip = `<div style="display:flex;gap:4px;overflow-x:auto;margin-bottom:8px;">${setChips}</div>`;
+      const headerStrip = `
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:6px;margin-bottom:8px;">
+          <div style="display:flex;gap:4px;overflow-x:auto;min-width:0;">${setChips}</div>
+          <button type="button" class="mb-pill-btn ${ui.keepAwake ? 'awake-active' : ''}" style="flex-shrink:0;" data-action="toggle-keep-awake" aria-pressed="${ui.keepAwake}" title="${esc(tr('app.keepAwake'))}">
+            ☀ ${esc(tr('app.keepAwakeShort'))}: ${esc(ui.keepAwake ? tr('app.keepAwakeOn') : tr('app.keepAwakeOff'))}
+          </button>
+        </div>
+      `;
 
       if (currentSet.status === 'live') {
         return headerStrip + renderLiveRallyCockpit(setIdx, currentSet);
@@ -10688,8 +11272,8 @@ textarea:focus-visible {
           return `
             <div style="display:grid;grid-template-columns:64px 1fr 1fr;gap:8px;align-items:center;margin-bottom:6px;">
               <strong style="font-size:13px;">Set ${s.number}</strong>
-              <input type="text" class="mb-input mb-input-sm tabular" placeholder="Start HH:MM" data-set-time="${idx}.startTime" value="${esc(s.startTime || '')}">
-              <input type="text" class="mb-input mb-input-sm tabular" placeholder="End HH:MM" data-set-time="${idx}.endTime" value="${esc(s.endTime || '')}">
+              <input type="time" class="mb-input mb-input-sm tabular" aria-label="Set ${s.number} Start Time" data-set-time="${idx}.startTime" value="${esc(s.startTime || '')}">
+              <input type="time" class="mb-input mb-input-sm tabular" aria-label="Set ${s.number} End Time" data-set-time="${idx}.endTime" value="${esc(s.endTime || '')}">
             </div>
           `;
         })
@@ -10723,6 +11307,12 @@ textarea:focus-visible {
             </button>
             <button type="button" class="mb-btn" data-action="share-png">
               📤 ${esc(tr('export.sharePNG'))}
+            </button>
+            <button type="button" class="mb-btn" data-action="download-svg">
+              📐 ${esc(tr('export.downloadSVG'))}
+            </button>
+            <button type="button" class="mb-btn" data-action="open-svg">
+              🔍 ${esc(tr('export.openSVG'))}
             </button>
             <button type="button" class="mb-btn" data-action="export-json">
               💾 ${esc(tr('export.exportJSON'))}
@@ -11049,6 +11639,54 @@ textarea:focus-visible {
             <button type="button" class="mb-btn mb-btn-primary" style="flex:1;" data-action="sig-save" data-role="${esc(m.role)}">Save Signature</button>
           </div>
         `;
+      } else if (m.type === 'finishSet') {
+        const fSet = doc.state.sets[m.setIndex] || doc.state.sets[doc.state.currentSetIndex || 0] || {};
+        const leftKey = fSet.leftTeam || 'A';
+        const rightKey = fSet.rightTeam || (leftKey === 'A' ? 'B' : 'A');
+        const leftPts = fSet.points?.[leftKey] ?? 0;
+        const rightPts = fSet.points?.[rightKey] ?? 0;
+        const durPreview = calcDurationMin(m.startTime, m.endTime);
+
+        bodyHtml = `
+          <div class="mb-modal-header">
+            <h3 class="mb-modal-title">🏆 ${esc(tr('live.finishSetModalTitle', { set: fSet.number || m.setIndex + 1 }))}</h3>
+            <button type="button" class="mb-del-btn" data-action="close-modal">✕</button>
+          </div>
+
+          <div style="background:var(--court-navy-soft);border:1px solid var(--border-strong);border-radius:var(--radius-md);padding:10px 12px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;gap:8px;font-weight:800;color:var(--court-navy);">
+            <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">[${leftKey}] ${esc(teamDisplayName(leftKey))}</span>
+            <span class="tabular" style="font-size:20px;font-weight:900;flex-shrink:0;">${leftPts} : ${rightPts}</span>
+            <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:right;">[${rightKey}] ${esc(teamDisplayName(rightKey))}</span>
+          </div>
+
+          <div class="mb-field" style="margin-bottom:10px;">
+            <span class="mb-label">🕐 ${esc(tr('live.setEndTimeLabel'))}</span>
+            <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
+              <input type="time" class="mb-input mb-input-sm tabular" style="flex:1;min-width:130px;" id="mb-finish-end-time" data-finish-time="endTime" value="${esc(m.endTime || '')}">
+              <button type="button" class="mb-time-chip" data-action="finish-time-now">${esc(tr('lineup.useNow'))}</button>
+              <button type="button" class="mb-time-chip" data-action="finish-time-clear">${esc(tr('lineup.clearTime'))}</button>
+            </div>
+          </div>
+
+          <div class="mb-field" style="margin-bottom:10px;">
+            <span class="mb-label">${esc(tr('live.setStartTimeLabel'))}</span>
+            <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
+              <input type="time" class="mb-input mb-input-sm tabular" style="flex:1;min-width:130px;" id="mb-finish-start-time" data-finish-time="startTime" value="${esc(m.startTime || '')}">
+              <button type="button" class="mb-time-chip" data-action="finish-start-clear">${esc(tr('lineup.clearTime'))}</button>
+            </div>
+          </div>
+
+          <div id="mb-finish-duration-preview" class="tabular" style="font-size:13px;font-weight:700;color:var(--text-secondary);margin-bottom:14px;min-height:18px;">
+            ${durPreview !== null ? `⏱ ${esc(tr('live.setDurationPreview', { min: durPreview }))}` : ''}
+          </div>
+
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <button type="button" class="mb-btn" style="flex:1;" data-action="close-modal">${esc(tr('app.cancel')) || 'Cancel'}</button>
+            <button type="button" class="mb-btn mb-btn-success" style="flex:2;" data-action="confirm-finish-set">
+              ✓ ${esc(tr('live.confirmFinishSetBtn', { set: fSet.number || m.setIndex + 1 }))}
+            </button>
+          </div>
+        `;
       } else if (m.type === 'confirmClear') {
         bodyHtml = `
           <div class="mb-modal-header">
@@ -11201,17 +11839,20 @@ textarea:focus-visible {
     }
 
     // ========================================================================
-    // Interactive Pan & Pinch/Wheel Zoom on Matchblatt Stage
+    // Interactive Vector Pan, Pinch/Wheel Zoom & Double-Tap Zoom on Matchblatt Stage
     // ========================================================================
     (function setupSheetPanZoom() {
       const pointers = new Map();
-      let startPanX = 0;
-      let startPanY = 0;
+      let startCamDX = 0;
+      let startCamDY = 0;
       let startClientX = 0;
       let startClientY = 0;
       let initialPinchDist = 0;
       let initialZoom = 1;
       let movedSignificantly = false;
+      let lastTapTime = 0;
+      let lastTapX = 0;
+      let lastTapY = 0;
 
       sheetStageEl.addEventListener('pointerdown', (e) => {
         if (e.target.closest('.mb-sheet-zoom-hud')) return;
@@ -11221,13 +11862,13 @@ textarea:focus-visible {
         if (pointers.size === 1) {
           startClientX = e.clientX;
           startClientY = e.clientY;
-          startPanX = ui.panX;
-          startPanY = ui.panY;
+          startCamDX = ui.camDX || 0;
+          startCamDY = ui.camDY || 0;
           sheetStageEl.classList.add('is-panning');
         } else if (pointers.size === 2) {
           const pts = Array.from(pointers.values());
           initialPinchDist = Math.hypot(pts[0].x - pts[1].x, pts[0].y - pts[1].y);
-          initialZoom = ui.zoom;
+          initialZoom = ui.zoom || 1;
         }
       });
 
@@ -11239,36 +11880,76 @@ textarea:focus-visible {
           const dx = e.clientX - startClientX;
           const dy = e.clientY - startClientY;
           if (Math.abs(dx) > 4 || Math.abs(dy) > 4) movedSignificantly = true;
-          if (movedSignificantly) {
-            ui.panX = startPanX + dx;
-            ui.panY = startPanY + dy;
+          if (movedSignificantly && ui.zoom > 1.001) {
+            const pxPerUnit = (currentRenderMetrics && currentRenderMetrics.pxPerUnit) || 1;
+            ui.camDX = startCamDX - dx / pxPerUnit;
+            ui.camDY = startCamDY - dy / pxPerUnit;
             applyPanZoom();
           }
         } else if (pointers.size === 2 && initialPinchDist > 10) {
           movedSignificantly = true;
           const pts = Array.from(pointers.values());
           const dist = Math.hypot(pts[0].x - pts[1].x, pts[0].y - pts[1].y);
-          ui.zoom = Math.min(4, Math.max(0.6, initialZoom * (dist / initialPinchDist)));
-          applyPanZoom();
+          const midX = (pts[0].x + pts[1].x) / 2;
+          const midY = (pts[0].y + pts[1].y) / 2;
+          zoomAtPoint(initialZoom * (dist / initialPinchDist), midX, midY);
         }
       });
 
       const clearPointer = (e) => {
+        const wasSinglePointer = pointers.size === 1 && pointers.has(e.pointerId);
         pointers.delete(e.pointerId);
-        if (pointers.size === 0) {
+
+        if (pointers.size === 1) {
+          // Smoothly re-anchor single remaining finger after a 2-finger pinch ends
+          const rem = Array.from(pointers.values())[0];
+          startClientX = rem.x;
+          startClientY = rem.y;
+          startCamDX = ui.camDX || 0;
+          startCamDY = ui.camDY || 0;
+        } else if (pointers.size === 0) {
           sheetStageEl.classList.remove('is-panning');
+          if (movedSignificantly) {
+            ui.suppressNextSheetClick = true;
+            setTimeout(() => {
+              ui.suppressNextSheetClick = false;
+            }, 80);
+          } else if (wasSinglePointer && e.type === 'pointerup' && e.pointerType === 'touch' && !ui.manualEditMode) {
+            const now = Date.now();
+            if (now - lastTapTime < 300 && Math.hypot(e.clientX - lastTapX, e.clientY - lastTapY) < 28) {
+              lastTapTime = 0;
+              if (ui.zoom > 1.2) {
+                resetPanZoom();
+              } else {
+                zoomAtPoint(3, e.clientX, e.clientY);
+              }
+            } else {
+              lastTapTime = now;
+              lastTapX = e.clientX;
+              lastTapY = e.clientY;
+            }
+          }
         }
       };
       window.addEventListener('pointerup', clearPointer);
       window.addEventListener('pointercancel', clearPointer);
 
+      sheetStageEl.addEventListener('dblclick', (e) => {
+        if (e.target.closest('.mb-sheet-zoom-hud') || ui.manualEditMode) return;
+        e.preventDefault();
+        if (ui.zoom > 1.2) {
+          resetPanZoom();
+        } else {
+          zoomAtPoint(3, e.clientX, e.clientY);
+        }
+      });
+
       sheetStageEl.addEventListener(
         'wheel',
         (e) => {
           e.preventDefault();
-          const delta = e.deltaY < 0 ? 1.12 : 0.89;
-          ui.zoom = Math.min(4, Math.max(0.6, ui.zoom * delta));
-          applyPanZoom();
+          const delta = e.deltaY < 0 ? 1.16 : 0.86;
+          zoomAtPoint((ui.zoom || 1) * delta, e.clientX, e.clientY);
         },
         { passive: false }
       );
@@ -11352,7 +12033,18 @@ textarea:focus-visible {
         return;
       }
 
-      const resStart = Engine.dispatch(resB.doc, { type: 'CONFIRM_SET_START', setIndex: setIdx, force: Boolean(force) });
+      const startTimeInput = document.getElementById('mb-lineup-start-time');
+      if (startTimeInput) {
+        ui.startTimeDrafts[setIdx] = startTimeInput.value.trim();
+      }
+      const chosenStartTime = getDraftStartTime(setIdx);
+
+      const resStart = Engine.dispatch(resB.doc, {
+        type: 'CONFIRM_SET_START',
+        setIndex: setIdx,
+        startTime: chosenStartTime,
+        force: Boolean(force),
+      });
       if (resStart.error) {
         showToast(resStart.error, 'danger');
         return;
@@ -11364,6 +12056,7 @@ textarea:focus-visible {
       }
 
       doc = resStart.doc;
+      delete ui.startTimeDrafts[setIdx];
       Engine.saveToStorage(doc);
       ui.modal = null;
       ui.sheetViewMode = 'set';
@@ -11439,11 +12132,21 @@ textarea:focus-visible {
           }
           break;
 
+        case 'toggle-keep-awake':
+          ui.keepAwake = !ui.keepAwake;
+          saveKeepAwakePref(ui.keepAwake);
+          syncWakeLock();
+          renderTopbar();
+          if (ui.activeTab === 'live') renderControls();
+          showToast(ui.keepAwake ? tr('app.keepAwakeToastOn') : tr('app.keepAwakeToastOff'));
+          break;
+
         case 'load-demo':
           ui.menuOpen = false;
           doc = Engine.createDemoMatch(doc.state.lang || 'de');
           Engine.saveToStorage(doc);
           ui.lineupDrafts = {};
+          ui.startTimeDrafts = {};
           ui.activeTab = 'live';
           ui.sheetViewMode = 'set';
           ui.sheetSetIndex = doc.state.currentSetIndex || 0;
@@ -11469,6 +12172,7 @@ textarea:focus-visible {
           });
           Engine.saveToStorage(doc);
           ui.lineupDrafts = {};
+          ui.startTimeDrafts = {};
           ui.modal = null;
           ui.activeTab = 'setup';
           ui.sheetViewMode = 'full';
@@ -11512,12 +12216,17 @@ textarea:focus-visible {
           break;
 
         case 'sheet-zoom-in':
-          ui.zoom = Math.min(4, ui.zoom * 1.25);
+          ui.zoom = Math.min(8, (ui.zoom || 1) * 1.35);
           applyPanZoom();
           break;
 
         case 'sheet-zoom-out':
-          ui.zoom = Math.max(0.6, ui.zoom / 1.25);
+          ui.zoom = Math.max(1, (ui.zoom || 1) / 1.35);
+          if (ui.zoom <= 1.001) {
+            ui.zoom = 1;
+            ui.camDX = 0;
+            ui.camDY = 0;
+          }
           applyPanZoom();
           break;
 
@@ -11723,6 +12432,32 @@ textarea:focus-visible {
           break;
         }
 
+        case 'lineup-time-now': {
+          const setIdx = Number(btn.getAttribute('data-set-index') || 0);
+          const nowStr = formatCurrentHHMM();
+          ui.startTimeDrafts[setIdx] = nowStr;
+          const inp = document.getElementById('mb-lineup-start-time');
+          if (inp) inp.value = nowStr;
+          break;
+        }
+
+        case 'lineup-time-scheduled': {
+          const setIdx = Number(btn.getAttribute('data-set-index') || 0);
+          const sched = (doc.state.meta && doc.state.meta.time) ? String(doc.state.meta.time).trim() : formatCurrentHHMM();
+          ui.startTimeDrafts[setIdx] = sched;
+          const inp = document.getElementById('mb-lineup-start-time');
+          if (inp) inp.value = sched;
+          break;
+        }
+
+        case 'lineup-time-clear': {
+          const setIdx = Number(btn.getAttribute('data-set-index') || 0);
+          ui.startTimeDrafts[setIdx] = '';
+          const inp = document.getElementById('mb-lineup-start-time');
+          if (inp) inp.value = '';
+          break;
+        }
+
         case 'confirm-start-set':
           attemptStartSet(Number(btn.getAttribute('data-set-index')), false);
           break;
@@ -11749,12 +12484,69 @@ textarea:focus-visible {
         }
 
         case 'finish-set': {
-          dispatchAction({ type: 'FINISH_SET' }, { syncSetView: true });
+          const fIdx = doc.state.currentSetIndex || 0;
+          const curSet = doc.state.sets[fIdx];
+          if (!curSet) break;
+          ui.modal = {
+            type: 'finishSet',
+            setIndex: fIdx,
+            startTime: curSet.startTime || '',
+            endTime: curSet.endTime || formatCurrentHHMM(),
+          };
+          renderModal();
+          break;
+        }
+
+        case 'finish-time-now': {
+          if (ui.modal && ui.modal.type === 'finishSet') {
+            ui.modal.endTime = formatCurrentHHMM();
+            renderModal();
+          }
+          break;
+        }
+
+        case 'finish-time-clear': {
+          if (ui.modal && ui.modal.type === 'finishSet') {
+            ui.modal.endTime = '';
+            renderModal();
+          }
+          break;
+        }
+
+        case 'finish-start-clear': {
+          if (ui.modal && ui.modal.type === 'finishSet') {
+            ui.modal.startTime = '';
+            renderModal();
+          }
+          break;
+        }
+
+        case 'confirm-finish-set': {
+          if (!ui.modal || ui.modal.type !== 'finishSet') break;
+          const fIdx = ui.modal.setIndex;
+          const endInp = document.getElementById('mb-finish-end-time');
+          const startInp = document.getElementById('mb-finish-start-time');
+          const endTime = endInp ? endInp.value.trim() : (ui.modal.endTime || '');
+          const startTime = startInp ? startInp.value.trim() : (ui.modal.startTime || '');
+          ui.modal = null;
+          dispatchAction(
+            {
+              type: 'FINISH_SET',
+              setIndex: fIdx,
+              startTime,
+              endTime,
+            },
+            { syncSetView: true }
+          );
           if (doc.state.phase === 'finished') {
             ui.activeTab = 'review';
             ui.sheetViewMode = 'full';
             resetPanZoom();
             renderAll();
+          } else {
+            const nextIdx = doc.state.currentSetIndex || 0;
+            delete ui.startTimeDrafts[nextIdx];
+            renderControls();
           }
           break;
         }
@@ -11999,6 +12791,22 @@ textarea:focus-visible {
           }
           break;
 
+        case 'download-svg':
+          ui.menuOpen = false;
+          if (Exporter && Exporter.downloadSVG) {
+            Exporter.downloadSVG(doc.state);
+            showToast('Vector SVG downloaded.');
+          }
+          break;
+
+        case 'open-svg':
+          ui.menuOpen = false;
+          renderTopbar();
+          if (Exporter && Exporter.openSVG) {
+            Exporter.openSVG(doc.state);
+          }
+          break;
+
         case 'export-json':
           ui.menuOpen = false;
           if (Exporter && Exporter.exportJSON) {
@@ -12089,8 +12897,30 @@ textarea:focus-visible {
             startTime: prop === 'startTime' ? t.value : s.startTime,
             endTime: prop === 'endTime' ? t.value : s.endTime,
           },
-          { sheetOnly: true }
+          { sheetOnly: false }
         );
+      }
+    });
+
+    // Live draft tracking for Set Start / Finish time inputs without losing picker focus
+    rootEl.addEventListener('input', (e) => {
+      const t = e.target;
+      if (!t || !t.getAttribute) return;
+
+      const lineupSetAttr = t.getAttribute('data-lineup-start-time');
+      if (lineupSetAttr !== null) {
+        ui.startTimeDrafts[Number(lineupSetAttr)] = t.value;
+        return;
+      }
+
+      const finishField = t.getAttribute('data-finish-time');
+      if (finishField && ui.modal && ui.modal.type === 'finishSet') {
+        ui.modal[finishField] = t.value;
+        const previewEl = document.getElementById('mb-finish-duration-preview');
+        if (previewEl) {
+          const dur = calcDurationMin(ui.modal.startTime, ui.modal.endTime);
+          previewEl.textContent = dur !== null ? `⏱ ${tr('live.setDurationPreview', { min: dur })}` : '';
+        }
       }
     });
 
@@ -12119,6 +12949,7 @@ textarea:focus-visible {
         }
         Engine.saveToStorage(doc);
         ui.lineupDrafts = {};
+        ui.startTimeDrafts = {};
         ui.activeTab = phaseToTab(doc.state.phase);
         ui.sheetSetIndex = doc.state.currentSetIndex || 0;
         renderAll();

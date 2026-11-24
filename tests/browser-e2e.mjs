@@ -295,13 +295,21 @@ async function run() {
       `iPhone 17 Setup horizontal overflow: scrollWidth=${setupMetrics.scrollW} > innerWidth=${setupMetrics.innerW}`
     );
 
-    // Toggle EN / DE language switch and set Setup fields
+    // Toggle EN / DE language switch and set Setup fields (including scheduled game start time 18:30)
     await evalJS(`
       document.querySelector('[data-action="set-lang"][data-lang="en"]').click();
+      const timeInp = document.querySelector('[data-meta="time"]');
+      timeInp.value = '18:30';
+      timeInp.dispatchEvent(new Event('input', { bubbles: true }));
+      timeInp.dispatchEvent(new Event('change', { bubbles: true }));
     `);
     await sleep(100);
     const enTitleCheck = await evalJS(`document.body.innerText.includes('Match') && document.body.innerText.includes('Teams')`);
     assert.ok(enTitleCheck, 'EN language toggle must translate step tabs');
+
+    // Verify Screen Wake Lock is ON by default and can be toggled OFF and ON
+    const wakeInitial = await evalJS(`window.__mbWakeLockStatus()`);
+    assert.equal(wakeInitial.keepAwake, true, 'Keep Screen On must default to true when website opens');
 
     // Switch back to DE (Swiss Volley default) or keep EN — let's use EN for clear international readability or test both!
     // Go to Step 2: Rosters -> Rapid space-separated jersey entry (ONLY jersey numbers!)
@@ -343,17 +351,33 @@ async function run() {
     })`);
     assert.ok(rosterCounts.aCount === 8, `Expected 8 Team A players from rapid entry, got ${rosterCounts.aCount}`);
 
-    // Go to Step 3: Set 1 Lineup
+    // Go to Step 3: Set 1 Lineup — verify Set 1 Start Time defaults to scheduled game start (18:30)
     await evalJS(`document.querySelector('[data-action="switch-tab"][data-tab="live"]').click()`);
     await sleep(180);
 
-    // Test Libero guard in lineup (clicking Libero chip #12) + autofill 6 starters for A and B + Confirm Set Start
+    const set1DefaultStartTime = await evalJS(`document.getElementById('mb-lineup-start-time')?.value`);
+    assert.equal(set1DefaultStartTime, '18:30', 'Set 1 lineup start time input must default to scheduled game start (18:30)');
+
+    // Test Keep Screen On pill toggle OFF -> ON right from Step 3 strip
+    await evalJS(`document.querySelector('[data-action="toggle-keep-awake"]').click()`);
+    await sleep(80);
+    const wakeOff = await evalJS(`window.__mbWakeLockStatus()`);
+    assert.equal(wakeOff.keepAwake, false, 'Keep Screen On toggle must switch keepAwake to false');
+    await evalJS(`document.querySelector('[data-action="toggle-keep-awake"]').click()`);
+    await sleep(80);
+    const wakeBackOn = await evalJS(`window.__mbWakeLockStatus()`);
+    assert.equal(wakeBackOn.keepAwake, true, 'Keep Screen On toggle must restore keepAwake to true');
+
+    // Test Libero guard in lineup + autofill 6 starters for A and B + Confirm Set Start
     await evalJS(`
       document.querySelector('[data-action="autofill-lineup"][data-team="A"]').click();
       document.querySelector('[data-action="autofill-lineup"][data-team="B"]').click();
       document.querySelector('[data-action="confirm-start-set"]').click();
     `);
     await sleep(220);
+
+    const startedSet1Time = await evalJS(`JSON.parse(localStorage.getItem('matchblatt_doc_v1')).state.sets[0].startTime`);
+    assert.equal(startedSet1Time, '18:30', 'Confirming Set 1 start must record the Set 1 start time');
 
     // Score rallies on iPhone 17: Left +1, Left +1, Right +1 (side-out rotation!), Substitution, Timeout, Undo
     await evalJS(`
@@ -428,13 +452,78 @@ async function run() {
 
     await captureScreenshot('01_iphone17_live_scoring.png');
 
-    // Toggle Full Sheet zoom-out on iPhone 17 and verify viewBox switches to 0 0 1684 1190, then back to Current Set
+    // Toggle Full Sheet on iPhone 17 and verify crisp vector viewBox zoom (zero CSS transform scale blur!)
     await evalJS(`document.querySelector('[data-action="sheet-mode-full"]').click()`);
     await sleep(150);
     const fullVBAttr = await evalJS(`document.querySelector('#mb-sheet-mount svg')?.getAttribute('viewBox')`);
     assert.equal(fullVBAttr, '0 0 1684 1190', 'Full Sheet toggle must switch SVG viewBox to 0 0 1684 1190');
+
+    // Zoom in twice on Full Sheet on iPhone 17 and verify pure vector viewBox zoom + zero CSS scale blur
+    await evalJS(`
+      document.querySelector('[data-action="sheet-zoom-in"]').click();
+      document.querySelector('[data-action="sheet-zoom-in"]').click();
+    `);
+    await sleep(120);
+    const zoomedMetrics = await evalJS(`(() => {
+      const svg = document.querySelector('#mb-sheet-mount svg');
+      const tf = document.getElementById('mb-sheet-transform');
+      const vb = svg.getAttribute('viewBox').trim().split(/\\s+/).map(Number);
+      return {
+        transformStyle: tf.style.transform,
+        willChange: getComputedStyle(tf).willChange,
+        vbW: vb[2],
+        vbH: vb[3],
+        zoomLabel: document.getElementById('mb-zoom-pct').innerText
+      };
+    })()`);
+    assert.equal(zoomedMetrics.transformStyle, 'none', 'Zoomed Full Sheet must NOT use CSS transform scale() bitmap stretching');
+    assert.notEqual(zoomedMetrics.willChange, 'transform', 'mb-sheet-transform must not set will-change: transform');
+    assert.ok(zoomedMetrics.vbW < 1200 && zoomedMetrics.vbH < 1190, `Vector zoom must narrow SVG viewBox, got ${zoomedMetrics.vbW}x${zoomedMetrics.vbH}`);
+    await captureScreenshot('01b_iphone17_fullsheet_vector_zoom.png');
+
+    await evalJS(`document.querySelector('[data-action="sheet-zoom-reset"]').click()`);
+    await sleep(80);
+    const resetVBAttr = await evalJS(`document.querySelector('#mb-sheet-mount svg')?.getAttribute('viewBox')`);
+    assert.equal(resetVBAttr, '0 0 1684 1190', 'Zoom reset must restore exact 0 0 1684 1190 viewBox');
+
     await evalJS(`document.querySelector('[data-action="sheet-mode-set"]').click()`);
     await sleep(120);
+
+    // Score Set 1 to set-point win on iPhone 17 and test Confirm End of Set Modal with End Time UI!
+    await evalJS(`(() => {
+      for (let i = 0; i < 22; i++) {
+        document.getElementById('btn-score-left').click();
+      }
+    })()`);
+    await sleep(150);
+    await evalJS(`document.querySelector('[data-action="finish-set"]').click()`);
+    await sleep(120);
+    await captureScreenshot('01c_iphone17_finish_set_time_modal.png');
+
+    const finishModalInfo = await evalJS(`(() => {
+      const endInp = document.getElementById('mb-finish-end-time');
+      const startInp = document.getElementById('mb-finish-start-time');
+      if (!endInp || !startInp) return null;
+      const defaultEndVal = endInp.value;
+      endInp.value = '18:56';
+      endInp.dispatchEvent(new Event('input', { bubbles: true }));
+      return {
+        defaultEndValidHHMM: /^\\d{2}:\\d{2}$/.test(defaultEndVal),
+        startVal: startInp.value,
+        durationPreview: document.getElementById('mb-finish-duration-preview')?.innerText || ''
+      };
+    })()`);
+    assert.ok(finishModalInfo, 'Clicking End Set button must open Confirm End of Set modal with time inputs');
+    assert.ok(finishModalInfo.defaultEndValidHHMM, 'Confirm End of Set modal must default End Time to current HH:MM');
+    assert.equal(finishModalInfo.startVal, '18:30', 'Confirm End of Set modal must display Set 1 start time');
+    assert.ok(finishModalInfo.durationPreview.includes('26'), `Expected 26 min duration preview, got: ${finishModalInfo.durationPreview}`);
+
+    await evalJS(`document.querySelector('[data-action="confirm-finish-set"]').click()`);
+    await sleep(180);
+    const finishedSet1 = await evalJS(`JSON.parse(localStorage.getItem('matchblatt_doc_v1')).state.sets[0]`);
+    assert.equal(finishedSet1.status, 'finished', 'Confirming End of Set modal must close Set 1');
+    assert.equal(finishedSet1.endTime, '18:56', 'Set 1 must save custom end time 18:56');
+    assert.equal(finishedSet1.durationMin, 26, 'Set 1 must compute 26 min duration');
 
     // =========================================================================
     // 2. Pixel Fold / iPhone Duo Unfolded Viewport (840x900): Dual-Pane Split
@@ -602,6 +691,8 @@ async function run() {
     const exportCheck = await evalJS(`(async () => {
       const raw = JSON.parse(localStorage.getItem('matchblatt_doc_v1'));
       const pngBlob = await window.Matchblatt.Exporter.toPNGBlob(raw.state, { width: 2382, height: 1684 });
+      const defaultCanvas = await window.Matchblatt.Exporter.svgToCanvas(raw.state);
+      const svgBlob = window.Matchblatt.Exporter.toSVGBlob(raw.state);
       const pdfBlob = await window.Matchblatt.Exporter.toPDFBlob(raw.state);
       const pngBuf = new Uint8Array(await pngBlob.arrayBuffer());
       const pdfBuf = new Uint8Array(await pdfBlob.arrayBuffer());
@@ -612,6 +703,11 @@ async function run() {
       const pdfHead = new TextDecoder('latin1').decode(pdfBuf.slice(0, 8));
       const pdfTail = new TextDecoder('latin1').decode(pdfBuf.slice(-16));
       return {
+        defaultCanvasW: defaultCanvas.width,
+        defaultCanvasH: defaultCanvas.height,
+        svgBlobSize: svgBlob.size,
+        hasDownloadSvgBtn: !!document.querySelector('[data-action="download-svg"]'),
+        hasOpenSvgBtn: !!document.querySelector('[data-action="open-svg"]'),
         pngSize: pngBlob.size,
         pngMagic: Array.from(pngBuf.slice(0, 4)),
         pngB64: btoa(bin),
@@ -624,6 +720,10 @@ async function run() {
     fs.writeFileSync(path.join(scratchDir, 'filled_sheet_export.png'), Buffer.from(exportCheck.pngB64, 'base64'));
     console.log('  📸 Saved scratch/filled_sheet_export.png (filled demo + signature 1:1 full sheet)');
     console.log('  ✓ Browser High-DPI Export verified:', JSON.stringify({ ...exportCheck, pngB64: '<omitted>' }));
+    assert.equal(exportCheck.defaultCanvasW, 4210, 'Default raster export width must be upgraded to 4210px (2.5x Ultra-HD)');
+    assert.equal(exportCheck.defaultCanvasH, 2975, 'Default raster export height must be upgraded to 2975px (2.5x Ultra-HD)');
+    assert.ok(exportCheck.svgBlobSize > 20000, 'Direct vector SVG export blob must be non-trivial');
+    assert.ok(exportCheck.hasDownloadSvgBtn && exportCheck.hasOpenSvgBtn, 'Review & Export must expose Download SVG and Open Vector SVG buttons');
     assert.deepEqual(exportCheck.pngMagic, [0x89, 0x50, 0x4e, 0x47], 'PNG blob must have valid PNG magic header');
     assert.ok(exportCheck.pngSize > 80000, `Expected high-DPI PNG > 80KB, got ${exportCheck.pngSize}`);
     assert.equal(exportCheck.pdfHead, '%PDF-1.4', 'PDF blob must start with %PDF-1.4');

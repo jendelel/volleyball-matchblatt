@@ -656,4 +656,41 @@ test('Swiss Volley header metadata (matchType, level, gender, ageGroup), normali
   assert.equal(normalized.state.meta.ageGroup, 'U19');
 });
 
+// 11. Set Start & Finish Time Defaults and Optional Custom / Cleared Times
+test('CONFIRM_SET_START defaults Set 1 to meta.time (game start), supports custom/cleared times, and FINISH_SET computes or clears durationMin', () => {
+  let doc = setupReadyMatch(5);
+  doc = mustDispatch(doc, { type: 'UPDATE_META', meta: { time: '19:15' } }).doc;
+
+  // Set 1 without explicit startTime defaults to scheduled game start (meta.time = '19:15')
+  doc = mustDispatch(doc, {
+    type: 'CONFIRM_SET_START',
+    setIndex: 0,
+    startersA: ['1', '4', '7', '9', '11', '14'],
+    startersB: ['2', '5', '8', '10', '13', '16'],
+  }).doc;
+  assert.equal(doc.state.sets[0].startTime, '19:15', 'Set 1 startTime should default to scheduled game start meta.time');
+
+  // Score Set 1 to 25:0 and finish with explicit endTime (and adjusted startTime)
+  for (let i = 0; i < 25; i++) doc = mustDispatch(doc, { type: 'SCORE_POINT', team: 'A' }).doc;
+  doc = mustDispatch(doc, { type: 'FINISH_SET', startTime: '19:16', endTime: '19:41' }).doc;
+  assert.equal(doc.state.sets[0].startTime, '19:16');
+  assert.equal(doc.state.sets[0].endTime, '19:41');
+  assert.equal(doc.state.sets[0].durationMin, 25);
+
+  // Set 2 with optional cleared ('') start & end times records empty strings and null durationMin (not 0')
+  doc = mustDispatch(doc, {
+    type: 'CONFIRM_SET_START',
+    setIndex: 1,
+    startTime: '',
+    startersA: ['1', '4', '7', '9', '11', '14'],
+    startersB: ['2', '5', '8', '10', '13', '16'],
+  }).doc;
+  assert.equal(doc.state.sets[1].startTime, '', 'Optional cleared startTime should remain empty string');
+
+  for (let i = 0; i < 25; i++) doc = mustDispatch(doc, { type: 'SCORE_POINT', team: 'B' }).doc;
+  doc = mustDispatch(doc, { type: 'FINISH_SET', endTime: '' }).doc;
+  assert.equal(doc.state.sets[1].endTime, '', 'Optional cleared endTime should remain empty string');
+  assert.equal(doc.state.sets[1].durationMin, null, 'durationMin should be null when start/end time is omitted');
+});
+
 console.log(`\nEngine suite finished: ${passed} tests passed.\n`);

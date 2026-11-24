@@ -1698,7 +1698,12 @@
         var rcv = oppTeam(srv);
         csSet.servingTeam = srv;
         csSet.status = 'live';
-        csSet.startTime = action.startTime || csSet.startTime || formatNowHHMM();
+        if (action.startTime !== undefined) {
+          csSet.startTime = action.startTime === null ? '' : String(action.startTime).trim();
+        } else if (!csSet.startTime) {
+          var scheduledStart = csIdx === 0 && state.meta && state.meta.time ? String(state.meta.time).trim() : '';
+          csSet.startTime = scheduledStart || formatNowHHMM();
+        }
         state.phase = 'live';
 
         // Reset court & initialize Position I service turns: ✓ for server, X for receiver
@@ -1806,12 +1811,19 @@
           }
         }
 
-        fSet.endTime = action.endTime || fSet.endTime || formatNowHHMM();
-        if (action.durationMin != null) {
-          fSet.durationMin = Number(action.durationMin);
+        if (action.startTime !== undefined) {
+          fSet.startTime = action.startTime === null ? '' : String(action.startTime).trim();
+        }
+        if (action.endTime !== undefined) {
+          fSet.endTime = action.endTime === null ? '' : String(action.endTime).trim();
+        } else if (!fSet.endTime) {
+          fSet.endTime = formatNowHHMM();
+        }
+        if (action.durationMin !== undefined) {
+          fSet.durationMin = action.durationMin === null ? null : Number(action.durationMin);
         } else {
           var computedDur = computeDurationMinutes(fSet.startTime, fSet.endTime);
-          fSet.durationMin = computedDur !== null ? computedDur : 0;
+          fSet.durationMin = computedDur !== null ? computedDur : null;
         }
         fSet.winner = winner;
         fSet.status = 'finished';
@@ -2118,13 +2130,12 @@
         if (!utSet) {
           return { doc: doc, warnings: [], error: 'Invalid setIndex' };
         }
-        if (action.startTime !== undefined) utSet.startTime = String(action.startTime);
-        if (action.endTime !== undefined) utSet.endTime = String(action.endTime);
+        if (action.startTime !== undefined) utSet.startTime = action.startTime === null ? '' : String(action.startTime).trim();
+        if (action.endTime !== undefined) utSet.endTime = action.endTime === null ? '' : String(action.endTime).trim();
         if (action.durationMin !== undefined) {
           utSet.durationMin = action.durationMin === null ? null : Number(action.durationMin);
         } else {
-          var recomputed = computeDurationMinutes(utSet.startTime, utSet.endTime);
-          if (recomputed !== null) utSet.durationMin = recomputed;
+          utSet.durationMin = computeDurationMinutes(utSet.startTime, utSet.endTime);
         }
         state.highlights.push({ section: 'set', setIndex: utIdx, field: 'times' });
         state.lastActionLabel = tr('actions.setTimesUpdated', lang, { set: utSet.number });

@@ -5,8 +5,10 @@
 (function (root) {
   'use strict';
 
-  var DEFAULT_CANVAS_WIDTH = 3368;   // 1684 * 2 (High-DPI 2x A4 Landscape)
-  var DEFAULT_CANVAS_HEIGHT = 2380;  // 1190 * 2 (High-DPI 2x A4 Landscape)
+  var DEFAULT_CANVAS_WIDTH = 4210;   // 1684 * 2.5 (Ultra-HD 2.5x ~360 DPI A4 Landscape; 12.5MP < iOS Safari 16.77MP limit)
+  var DEFAULT_CANVAS_HEIGHT = 2975;  // 1190 * 2.5 (Ultra-HD 2.5x ~360 DPI A4 Landscape)
+  var FALLBACK_CANVAS_WIDTH = 3368;  // 1684 * 2
+  var FALLBACK_CANVAS_HEIGHT = 2380; // 1190 * 2
   var A4_LANDSCAPE_WIDTH_PT = 841.89;
   var A4_LANDSCAPE_HEIGHT_PT = 595.28;
   var PDF_MARGIN_PT = 12;
@@ -334,6 +336,15 @@
       canvas.width = width;
       canvas.height = height;
       var ctx = canvas.getContext('2d');
+      if (!ctx && (width > FALLBACK_CANVAS_WIDTH || height > FALLBACK_CANVAS_HEIGHT)) {
+        width = FALLBACK_CANVAS_WIDTH;
+        height = FALLBACK_CANVAS_HEIGHT;
+        normalizedSvg = normalizeSVGForCanvas(rawSvg, width, height);
+        canvas = docObj.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+        ctx = canvas.getContext('2d');
+      }
       if (!ctx) {
         reject(new Error('Failed to acquire 2D rendering context on export canvas.'));
         return;
@@ -482,7 +493,7 @@
       return true;
     }
     try {
-      var ext = mimeType === 'image/png' ? 'png' : 'pdf';
+      var ext = mimeType === 'image/png' ? 'png' : mimeType === 'image/svg+xml' ? 'svg' : 'pdf';
       var probe = new File([new Uint8Array([0])], 'probe.' + ext, { type: mimeType || 'application/pdf' });
       return Boolean(navigator.canShare({ files: [probe] }));
     } catch (_) {
@@ -546,6 +557,60 @@
     var resolved = normalizeFileAndOptions(state, filename, options, 'png');
     var blob = await toPNGBlob(state, resolved.options);
     return shareOrDownloadBlob(blob, resolved.filename, 'image/png');
+  }
+
+  /**
+   * Builds a standalone, print-clean XML SVG string (with XML declaration and explicit viewBox/width/height)
+   * and returns an `image/svg+xml` Blob for infinite-resolution vector viewing or printing.
+   */
+  function toSVGBlob(state, options) {
+    var rawSvg = getSVGString(state, options);
+    var normalized = normalizeSVGForCanvas(rawSvg, 1684, 1190);
+    var xmlHeader = /^<\?xml\b/i.test(normalized) ? '' : '<?xml version="1.0" encoding="UTF-8"?>\n';
+    return new Blob([xmlHeader + normalized], { type: 'image/svg+xml;charset=utf-8' });
+  }
+
+  /**
+   * Downloads the rendered Matchblatt directly as a pure vector `.svg` file.
+   */
+  function downloadSVG(state, filename, options) {
+    var resolved = normalizeFileAndOptions(state, filename, options, 'svg');
+    var blob = toSVGBlob(state, resolved.options);
+    triggerBlobDownload(blob, resolved.filename);
+  }
+
+  /**
+   * Shares the pure vector `.svg` file via native Share Sheet, or falls back to downloadSVG.
+   */
+  async function shareSVG(state, filename, options) {
+    var resolved = normalizeFileAndOptions(state, filename, options, 'svg');
+    var blob = toSVGBlob(state, resolved.options);
+    return shareOrDownloadBlob(blob, resolved.filename, 'image/svg+xml');
+  }
+
+  /**
+   * Opens the standalone vector Matchblatt SVG in a new browser tab for native mobile pinch-to-zoom & printing.
+   * Falls back to downloadSVG if popup blocking prevents opening a new tab.
+   */
+  function openSVG(state, options) {
+    var blob = toSVGBlob(state, options);
+    if (typeof window !== 'undefined' && typeof URL !== 'undefined' && typeof URL.createObjectURL === 'function') {
+      var objectUrl = URL.createObjectURL(blob);
+      var win = typeof window.open === 'function' ? window.open(objectUrl, '_blank', 'noopener') : null;
+      if (!win) {
+        triggerBlobDownload(blob, buildDefaultFilename(state, 'svg'));
+      }
+      var revokeTimer = setTimeout(function () {
+        try {
+          URL.revokeObjectURL(objectUrl);
+        } catch (_) {}
+      }, 60000);
+      if (revokeTimer && typeof revokeTimer.unref === 'function') {
+        revokeTimer.unref();
+      }
+      return true;
+    }
+    return false;
   }
 
   /**
@@ -965,6 +1030,10 @@
     toPNGBlob: toPNGBlob,
     downloadPNG: downloadPNG,
     sharePNG: sharePNG,
+    toSVGBlob: toSVGBlob,
+    downloadSVG: downloadSVG,
+    shareSVG: shareSVG,
+    openSVG: openSVG,
     buildPDFBytesFromJPEG: buildPDFBytesFromJPEG,
     toPDFBlob: toPDFBlob,
     downloadPDF: downloadPDF,
@@ -993,6 +1062,10 @@
       toPNGBlob: toPNGBlob,
       downloadPNG: downloadPNG,
       sharePNG: sharePNG,
+      toSVGBlob: toSVGBlob,
+      downloadSVG: downloadSVG,
+      shareSVG: shareSVG,
+      openSVG: openSVG,
       buildPDFBytesFromJPEG: buildPDFBytesFromJPEG,
       toPDFBlob: toPDFBlob,
       downloadPDF: downloadPDF,
